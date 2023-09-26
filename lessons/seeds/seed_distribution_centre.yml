@@ -1,0 +1,33 @@
+verson: 2
+
+seeds:
+  - name: seed_distribution_center
+    description: ""
+    tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          value: 2
+          severity: error
+    columns:
+      - name: id
+        description: ""
+        tests:
+          - not_null:
+              severity: error
+          - unique:
+              severity: error
+      - name: name
+        description: ""
+      - name: latitude
+        description: ""
+      - name: longitude
+        description: ""
+
+
+
+    config:
+      column_types:
+        id: INTEGER
+        name: STRING
+        latitude: FLOAT
+        longitude: FLOAT
+

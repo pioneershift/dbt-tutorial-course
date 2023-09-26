@@ -1,0 +1,23 @@
+# everything is a list
+
+version: 2  #https://docs.getdbt.com/faqs/project/why-version-2
+
+sources: #schema entries
+  - name: thelook_ecommerce
+    database: bigquery-public-data
+    tables:
+      - name: inventory_items
+      - name: order_items
+      - name: orders
+      - name: products
+      - name: users
+      - name: events
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after:
+            count: 24
+            period: hour
+          filter: "created_at >= '2023-01-01'"
+        loaded_at_field: created_at
+      - name: distribution_centers
+

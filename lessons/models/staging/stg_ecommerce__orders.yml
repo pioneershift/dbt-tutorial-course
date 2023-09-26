@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: stg_ecommerce__orders
+    description: "Table of orders"
+    config:
+      group: marketing
+      access: private
+    columns:
+      - name: order_id
+        description: ""
+        tests:
+          - not_null:
+              name: "Order_Id_Blank"
+          - unique:
+              name: "Order_Uniqueness_Check"
+          - primary_key_custom
+
+      - name: user_id
+        description: ""
+
+      - name: status
+        description: "{{ doc('status')}}"
+        tests:
+          - accepted_values:
+              name: "Value_Check"
+              values:
+                - Processing
+                - Cancelled
+                - Shipped
+                - Complete
+                - Returned
+
+      - name: gender
+        description: ""
+
+      - name: created_at
+        description: ""
+
+      - name: returned_at
+        description: ""
+
+      - name: shipped_at
+        description: ""
+
+      - name: delivered_at
+        description: ""
+
+      - name: num_of_item
+        description: ""
