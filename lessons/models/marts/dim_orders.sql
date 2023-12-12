@@ -15,6 +15,12 @@ order_item_measures AS (
 		SUM(item_profit) AS total_profit,
 		SUM(item_discount) AS total_discount,
 
+		{% set departments = ['Men','Women'] %}
+		{% for department in dbt_utils.get_column_values(table=ref('int_ecommerce__order_items_product'), column='product_department') %}
+		SUM(IF(product_department = '{{ department }}', sale_price, 0)) as total_sold_{{department.lower()}}swear{% if not loop.last %},{% endif -%}
+		{% endfor%}
+
+
 		{# This is overkill, but a nice way to show how loops work with dbt Jinja templating #}
 		{# {%- set departments = ['Men', 'Women'] -%} #}
 		{# {%- for department_name in departments %} #}
@@ -30,7 +36,7 @@ SELECT
 	-- dimension from our staging order table
 	od.order_id,
 	od.created_at AS order_created_at,
-	{# {{ is_weekend('od.created_at') }} AS order_was_created_on_weekend, -- Macro defined in macros/macro_is_weekend.sql #}
+	{{ is_weekend('od.created_at') }} AS order_was_created_on_weekend, -- Macro defined in macros/macro_is_weekend.sql
 	od.shipped_at AS order_shipped_at,
 	od.delivered_at AS order_delivered_at,
 	od.returned_at AS order_returned_at,
@@ -42,6 +48,7 @@ SELECT
 	om.total_product_cost,
 	om.total_profit,
 	om.total_discount,
+
 
 	-- Columns from our templated Jinja statement
 	-- We could just hard code these if we wanted, e.g.: total_sold_menswear, total_sold_womenswear

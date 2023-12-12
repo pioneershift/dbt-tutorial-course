@@ -1,0 +1,14 @@
+lessons:
+  outputs:
+    default:
+      dataset: dbt_prod
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      location: US
+      method: oauth
+      priority: interactive
+      project: elliptical-flow-397410
+      threads: 60
+      type: bigquery
+
+target: default

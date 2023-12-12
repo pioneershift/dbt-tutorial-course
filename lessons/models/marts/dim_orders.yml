@@ -5,7 +5,7 @@ models:
     description: "Table of order level information"
     config:
       group: sales
-    access: private
+    access: protected
     columns:
 
     # Columns from stg_ecommerce__orders

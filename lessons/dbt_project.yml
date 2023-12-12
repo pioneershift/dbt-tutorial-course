@@ -24,6 +24,9 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "dbt_packages"
 
 
+on-run-start:
+  - "{{get_brand_name() }}"
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
@@ -40,7 +43,10 @@ models:
       relation: true
       columns: true
     # Table deletes in 48 hours after creation
-    +hours_to_expiration: 178
+    +hours_to_expiration: |
+      {% if target.name == 'prod' %} 1
+      {% else %} 168
+      {% endif %}
     intermediate:
       +tags: ['dbt_course','intermediate']
 
